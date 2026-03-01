@@ -1,14 +1,14 @@
 # BitVLA: 1-bit Vision-Language-Action Models for Robotics Manipulation
-[[paper]](https://arxiv.org/abs/2506.07530) [[model]](https://huggingface.co/collections/hongyuw/bitvla-68468fb1e3aae15dd8a4e36e) [[code]](https://github.com/ustcwhy/BitVLA)
 
+- **March 2026:** 🚀 We have released the **pre-trained BitVLA model**! The evaluation results in the table below have been updated to reflect the performance after pre-training. You can try our new [pre-trained model](https://huggingface.co/lxsy/bitvla-bf16) out-of-the-box.
 - June 2025: [BitVLA: 1-bit Vision-Language-Action Models for Robotics Manipulation](https://arxiv.org/abs/2506.07530)
-
 
 ## Open Source Plan
 
 - ✅ Paper, Pre-trained VLM and evaluation code.
 - ✅ Fine-tuned VLA code and models
-- 🧭 Pre-training code and VLA.
+- ✅ Pre-trained VLA.
+- 🧭 Pre-training code
 
 ## Contents
 
@@ -18,6 +18,7 @@
   - [Vision-Language](#vision-language)
     - [Evaluation on VQA](#evaluation-on-vqa)
   - [Vision-Language-Action](#vision-language-action)
+    - [Robotics Pre-training](#robotics-pre-training)
     - [OFT Training](#oft-training)
       - [1. Preparing OFT](#1-preparing-oft)
       - [2. OFT fine-tuning](#2-oft-fine-tuning)
@@ -26,40 +27,44 @@
   - [Citation](#citation)
   - [License](#license)
     - [Contact Information](#contact-information)
-   
+
 ## Checkpoints
 
-| **Models**                    | **Size** | **Memory Usage↓** | **LIBERO-Spatial** | **LIBERO-Object** | **LIBERO-Goal** | **LIBERO-Long** | **Avg.** |
-| ----------------------------- | -------- | ----------------- | ----------- | ---------- | -------- | -------- | -------- |
-| *w/ Robotics pre-training*    |          |                   |             |            |          |          |          |
-| OpenVLA          | 7.5B     | 15.1GB (10.79×)   | 84.7        | 88.4       | 79.2     | 53.7     | 76.5     |
-| SpatialVLA    | 4.2B     | 8.5GB (6.07×)     | 88.2        | 89.9       | 78.6     | 55.5     | 78.1     |
-| CoT-VLA          | 8.0B     | 16.2GB (11.57×)   | 87.5        | 91.6       | 87.6     | 69.0     | 81.1     |
-| NORA-Long          | 3.8B     | 7.5GB (5.36×)     | 92.2        | 95.4       | 89.4     | 74.6     | 87.9     |
-| π₀                  | 3.5B     | 7.0GB (5.00×)     | 96.8        | 98.8       | 95.8     | 85.2     | 94.2     |
-| OpenVLA-OFT  | 7.7B     | 15.4GB (11.00×)   | 97.6        | 98.4       | 97.9     | 94.5     | 97.1     |
-| *w/o Robotics pre-training*   |          |                   |             |            |          |          |          |
-| OpenVLA-OFT | 7.7B     | 15.4GB (11.00×)   | 94.3        | 95.2       | 91.7     | 86.5     | 91.9     |
-| **BitVLA**             | 3.0B     | 1.4GB (1.00×)     | 97.4        | 99.6       | 94.4     | 87.6     | 94.8     |
+| **Models**        | **Size** | **Memory Usage↓** | **LIBERO-Spatial** | **LIBERO-Object** | **LIBERO-Goal** | **LIBERO-Long** | **Avg.** |
+| :---------------------- | :------------- | :----------------------- | :----------------------- | :---------------------- | :-------------------- | :-------------------- | :------------- |
+| *Large Models*        |                |                          |                          |                         |                       |                       |                |
+| OpenVLA                 | 7.5B           | 15.1GB (10.79×)         | 84.7                     | 88.4                    | 79.2                  | 53.7                  | 76.5           |
+| CoT-VLA                 | 8.0B           | 16.2GB (11.57×)         | 87.5                     | 91.6                    | 87.6                  | 69.0                  | 81.1           |
+| UniVLA                  | 8.5B           | 17.0GB (12.14×)         | 96.5                     | 96.8                    | 95.6                  | 92.0                  | 95.2           |
+| UnifiedVLA              | 8.5B           | 17.0GB (12.14×)         | 95.4                     | 98.8                    | 93.6                  | 94.0                  | 95.5           |
+| OpenVLA-OFT             | 7.7B           | 15.4GB (11.00×)         | 97.6                     | 98.4                    | 97.9                  | 94.5                  | 97.1           |
+| *Small Models*        |                |                          |                          |                         |                       |                       |                |
+| SpatialVLA              | 4.2B           | 8.5GB (6.07×)           | 88.2                     | 89.9                    | 78.6                  | 55.5                  | 78.1           |
+| NORA-Long               | 3.8B           | 7.5GB (5.36×)           | 92.2                     | 95.4                    | 89.4                  | 74.6                  | 87.9           |
+| 4D-VLA                  | 4.1B           | 8.3GB (5.93×)           | 88.9                     | 95.2                    | 90.9                  | 79.1                  | 88.6           |
+| SmolVLA                 | 2.3B           | 4.6GB (3.29×)           | 93.0                     | 94.0                    | 91.0                  | 77.0                  | 88.8           |
+| GROOT-N1                | 2.2B           | 4.4GB (3.14×)           | 94.4                     | 97.6                    | 93.0                  | 90.6                  | 93.9           |
+| π₀                    | 3.5B           | 7.0GB (5.00×)           | 96.8                     | 98.8                    | 95.8                  | 85.2                  | 94.2           |
+| BitVLA w/o pre-training | 3.0B           | 1.4GB (1.00×)           | 97.4                     | 99.6                    | 94.4                  | 87.6                  | 94.8           |
+| 🚀**BitVLA**      | 3.0B           | 1.4GB (1.00×)           | 96.6                     | 99.0                    | 95.4                  | 92.8                  | 96.0           |
 
-| Model     | Path |
-| -------------- | ----- |
-| BitVLA |   [hongyuw/bitvla-bitsiglipL-224px-bf16](https://huggingface.co/hongyuw/bitvla-bitsiglipL-224px-bf16)    |
-| BitVLA finetuned on LIBERO-Spatial |   [hongyuw/ft-bitvla-bitsiglipL-224px-libero_spatial-bf16](https://huggingface.co/hongyuw/ft-bitvla-bitsiglipL-224px-libero_spatial-bf16)    |
-| BitVLA finetuned on LIBERO-Object  |   [hongyuw/ft-bitvla-bitsiglipL-224px-libero_object-bf16](https://huggingface.co/hongyuw/ft-bitvla-bitsiglipL-224px-libero_object-bf16)    |
-| BitVLA finetuned on LIBERO-Goal    |   [hongyuw/ft-bitvla-bitsiglipL-224px-libero_long-bf16](https://huggingface.co/hongyuw/ft-bitvla-bitsiglipL-224px-libero_long-bf16)    |
-| BitVLA finetuned on LIBERO-Long    |   [hongyuw/ft-bitvla-bitsiglipL-224px-libero_long-bf16](https://huggingface.co/hongyuw/ft-bitvla-bitsiglipL-224px-libero_long-bf16)    |
-| BitVLA w/ BF16 SigLIP |  [hongyuw/bitvla-siglipL-224px-bf16](https://huggingface.co/hongyuw/bitvla-siglipL-224px-bf16)     |
+| Model                                   | Path                                                                                                                                 |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| 🚀**BitVLA - VL&VLA pre-trained** | [lxsy/bitvla-bf16](https://huggingface.co/lxsy/bitvla-bf16)                                                                             |
+| BitVLA - VL pre-trained                 | [hongyuw/bitvla-bitsiglipL-224px-bf16](https://huggingface.co/hongyuw/bitvla-bitsiglipL-224px-bf16)                                     |
+| BitVLA finetuned on LIBERO-Spatial      | [hongyuw/ft-bitvla-bitsiglipL-224px-libero_spatial-bf16](https://huggingface.co/hongyuw/ft-bitvla-bitsiglipL-224px-libero_spatial-bf16) |
+| BitVLA finetuned on LIBERO-Object       | [hongyuw/ft-bitvla-bitsiglipL-224px-libero_object-bf16](https://huggingface.co/hongyuw/ft-bitvla-bitsiglipL-224px-libero_object-bf16)   |
+| BitVLA finetuned on LIBERO-Goal         | [hongyuw/ft-bitvla-bitsiglipL-224px-libero_long-bf16](https://huggingface.co/hongyuw/ft-bitvla-bitsiglipL-224px-libero_long-bf16)       |
+| BitVLA finetuned on LIBERO-Long         | [hongyuw/ft-bitvla-bitsiglipL-224px-libero_long-bf16](https://huggingface.co/hongyuw/ft-bitvla-bitsiglipL-224px-libero_long-bf16)       |
+| BitVLA w/ BF16 SigLIP                   | [hongyuw/bitvla-siglipL-224px-bf16](https://huggingface.co/hongyuw/bitvla-siglipL-224px-bf16)                                           |
 
-*Note that we provide the master weights of BitVLA and perform online quantization. For actual memory savings, you may quantize the weights offline to 1.58-bit precision. We recommend using the [bitnet.cpp](https://github.com/microsoft/bitnet) inference framework to accurately measure the reduction in inference cost.*
-
-*Due to limited resources, we have not yet pre-trained BitVLA on a large-scale robotics dataset. We are actively working to secure additional compute resources to conduct this pre-training.*
+*Note that we provide the master weights of BitVLA and perform online quantization. For actual memory savings, you may quantize the weights offline to 1.58-bit precision. We recommend using the [bitnet.cpp](https://github.com/microsoft/bitnet) inference framework to accurately measure the reduction in inference cost. *A dedicated inference framework and model are coming soon.*
 
 ## Vision-Language
 
 ### Evaluation on VQA
 
-We use the [LMM-Eval](https://github.com/ustcwhy/BitVLA/tree/main/lmms-eval) toolkit to conduct evaluations on VQA tasks. We provide the [transformers repo](https://github.com/ustcwhy/BitVLA/tree/main/transformers) in which we modify the [modeling_llava.py](https://github.com/ustcwhy/BitVLA/blob/main/transformers/src/transformers/models/llava/modeling_llava.py) and [modeling_siglip.py](https://github.com/ustcwhy/BitVLA/blob/main/transformers/src/transformers/models/siglip/modeling_siglip.py) to support the W1.58-A8 quantization. 
+We use the [LMM-Eval](https://github.com/ustcwhy/BitVLA/tree/main/lmms-eval) toolkit to conduct evaluations on VQA tasks. We provide the [transformers repo](https://github.com/ustcwhy/BitVLA/tree/main/transformers) in which we modify the [modeling_llava.py](https://github.com/ustcwhy/BitVLA/blob/main/transformers/src/transformers/models/llava/modeling_llava.py) and [modeling_siglip.py](https://github.com/ustcwhy/BitVLA/blob/main/transformers/src/transformers/models/siglip/modeling_siglip.py) to support the W1.58-A8 quantization.
 
 The evaluation should use nvidia_24_07 docker. Install the packages:
 
@@ -90,9 +95,21 @@ Note that we provide the master weights of BitVLA and perform online quantizatio
 
 ## Vision-Language-Action
 
-### OFT Training 
+### Robotics Pre-training
+
+To endow BitVLA with generalizable manipulation priors that transfer across embodiments and environments, we pre-train it with an autoregressive next-action prediction objective following OpenVLA.
+
+**Pre-training Details:**
+
+* **Base model:** We use [hongyuw/bitvla-bitsiglipL-224px-bf16](https://huggingface.co/hongyuw/bitvla-bitsiglipL-224px-bf16) as the base model.
+* **Dataset:** Following OpenVLA, we use a curated large-scale corpus based on a subset of the Open X-Embodiment dataset, resulting in ~1M training samples.
+* **Hyperparameters:** We train the model for 200K steps with a total batch size of 2048. The peak learning rates are set to 3×10⁻⁴ for the LLM and 1×10⁻⁴ for the ViT.
+* **Compute:** The full pre-training takes approximately 14 days on 16 NVIDIA H800 (80GB) GPUs.
+
+### OFT Training
 
 #### 1. Preparing OFT
+
 We fine-tune BitVLA using OFT training shown in [OpenVLA-OFT](https://github.com/moojink/openvla-oft/tree/main). First setup the environment as required by that project. You can refer to [SETUP.md](https://github.com/moojink/openvla-oft/blob/main/SETUP.md) and [LIBERO.md](https://github.com/moojink/openvla-oft/blob/main/LIBERO.md) for detailed instructions.
 
 ```
@@ -126,13 +143,18 @@ git clone git@hf.co:datasets/openvla/modified_libero_rlds
 
 #### 2. OFT fine-tuning
 
-First convert the [BitVLA](https://huggingface.co/hongyuw/bitvla-bitsiglipL-224px-bf16) to a format compatible with the VLA codebase.
+##### Prepare the BitVLA
 
-```
-python convert_ckpt.py /path/to/bitvla-bitsiglipL-224px-bf16
-```
+* 🚀 **New [pre-trained model](https://huggingface.co/lxsy/bitvla-bf16) (Recommended):** This model is ready to use out-of-the-box. No additional processing is required, and you can directly execute our provided scripts.
+* 🕰️ **[Old model](https://huggingface.co/hongyuw/bitvla-bitsiglipL-224px-bf16):** This version was not pre-trained on the Open X-Embodiment dataset. To use this model, you must first convert the model into a format compatible with our codebase before using it.
+  ```
+  python convert_ckpt.py /path/to/bitvla-bitsiglipL-224px-bf16
+  ```
+
+##### Fine-tuing the BitVLA
 
 After that, you can finetune BitVLA using the provided shell script.
+
 ```
 sh ft_script/ft_bitvla_libero_spatial.sh
 sh ft_script/ft_bitvla_libero_object.sh
@@ -154,11 +176,12 @@ python experiments/robot/libero/run_libero_eval_bitnet.py \
 
 ## Acknowledgement
 
-This repository is built using [LMM-Eval](https://github.com/EvolvingLMMs-Lab/lmms-eval), [the HuggingFace's transformers](https://github.com/huggingface/transformers) and [OpenVLA-OFT](https://github.com/moojink/openvla-oft).
+This repository is built using [LMM-Eval](https://github.com/EvolvingLMMs-Lab/lmms-eval), [the HuggingFace&#39;s transformers](https://github.com/huggingface/transformers), [OpenVLA-OFT](https://github.com/moojink/openvla-oft) and [OpenVLA](https://github.com/openvla/openvla).
 
 ## Citation
 
 If you find this repository useful, please consider citing our work:
+
 ```
 @article{bitvla,
   title={BitVLA: 1-bit Vision-Language-Action Models for Robotics Manipulation}, 
@@ -171,6 +194,7 @@ If you find this repository useful, please consider citing our work:
 ```
 
 ## License
+
 This project is licensed under the MIT License.
 
 ### Contact Information
