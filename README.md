@@ -102,7 +102,7 @@ To endow BitVLA with generalizable manipulation priors that transfer across embo
 **Pre-training Details:**
 
 * **Base model:** We use [hongyuw/bitvla-bitsiglipL-224px-bf16](https://huggingface.co/hongyuw/bitvla-bitsiglipL-224px-bf16) as the base model.
-* **Dataset:** Following OpenVLA, we use a curated large-scale corpus based on a subset of the Open X-Embodiment dataset, resulting in ~1M training samples.
+* **Dataset:** Following OpenVLA, we use a curated large-scale corpus based on a subset of the [Open X-Embodiment dataset](https://huggingface.co/collections/IPEC-COMMUNITY/openx-lerobot), resulting in ~1M training samples.
 * **Hyperparameters:** We train the model for 200K steps with a total batch size of 2048. The peak learning rates are set to 3×10⁻⁴ for the LLM and 1×10⁻⁴ for the ViT.
 * **Compute:** The full pre-training takes approximately 14 days on 16 NVIDIA H800 (80GB) GPUs.
 
